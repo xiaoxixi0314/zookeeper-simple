@@ -1,15 +1,22 @@
 package com.github.xiaoxixi.javaapi;
 
 import org.apache.zookeeper.*;
+import org.apache.zookeeper.data.Stat;
 import org.springframework.util.StringUtils;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.CountDownLatch;
 
 public class ZookeeperWatcher implements Watcher {
 
     private final CountDownLatch waiter = new CountDownLatch(1);
 
-    private static final String host = "192.168.1.99:2181";
+    private static final String HOST = "192.168.1.99:2181";
+
+    private static final String PATH = "/test_watcher";
+
+    private static final String CHILDREN_PATH = PATH + "/children";
 
     private ZooKeeper zookeeper = null;
 
@@ -26,16 +33,16 @@ public class ZookeeperWatcher implements Watcher {
     public void createConnection(){
         this.releaseConnection();
         try {
-            zookeeper = new ZooKeeper(host, 3000, this);
+            zookeeper = new ZooKeeper(HOST, 3000, this);
             waiter.wait();
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    public String readData(String path) {
+    public String readData(String path, boolean needWatch) {
         try {
-            return new String(zookeeper.getData(path, false, null));
+            return new String(zookeeper.getData(path, needWatch, null));
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -55,6 +62,19 @@ public class ZookeeperWatcher implements Watcher {
             return false;
         }
     }
+
+    public List<String> getChildren(String path, boolean needWatch) {
+        List<String> childrens = new ArrayList<>();
+        try {
+            childrens = zookeeper.getChildren(path, needWatch);
+        } catch (KeeperException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        return childrens;
+    }
+
     public void writeData(String path, String value) {
         try {
             zookeeper.setData(path, value.getBytes(), -1);
@@ -71,30 +91,83 @@ public class ZookeeperWatcher implements Watcher {
         }
     }
 
-
-    @Override
-    public void process(WatchedEvent event) {
-        System.out.println("receive event notify:" + event.getState());
-        if(event.getState() == Event.KeeperState.SyncConnected) {
-            waiter.countDown();
+    public boolean exists(String path, boolean needWatch) {
+        Stat stat = null;
+        try {
+            stat =  zookeeper.exists(path, needWatch);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
+        return stat != null;
     }
 
-    public static void main(String[] args) {
+    /**
+     * 监听仅触发一次，
+     * 如果收到了一个监听事件并且想再次监听，
+     * 需重新再设置一次
+     * @param event
+     */
+    @Override
+    public void process(WatchedEvent event) {
+        if(event.getState() == Event.KeeperState.SyncConnected) {
+            System.out.println("zookeeper connected.");
+            waiter.countDown();
+        }
+        // 调用exists方法设置监听
+        if (event.getType() == Event.EventType.NodeCreated){
+            System.out.println("== node created:" + event.getPath());
+        }
+        // 调用exists, getData, getChildren设置监听
+        if (event.getType() == Event.EventType.NodeDeleted) {
+            System.out.println("== node deleted:" + event.getPath());
+        }
+
+        // 调用getData设置监听
+        if (event.getType() == Event.EventType.NodeChildrenChanged) {
+            System.out.println("== node child changed:" + event.getPath());
+        }
+        // 调用getData设置监听
+        if (event.getType() == Event.EventType.NodeDataChanged) {
+            System.out.println("== node data changed:" + event.getPath());
+        }
+
+    }
+
+    public static void main(String[] args) throws Exception{
 
         ZookeeperWatcher simple = new ZookeeperWatcher();
-        String path = "/other-simple";
+
 
         simple.createConnection();
-        simple.createPath(path, "other simple.");
-        String pathValue = simple.readData(path);
-        System.out.println("first read result:" + pathValue);
-        simple.writeData(path, "other simple 2.");
 
-        String pathValue2 = simple.readData(path);
-        System.out.println("second read result:" + pathValue2);
+        if (simple.exists(CHILDREN_PATH, false)) {
+            simple.deletePath(CHILDREN_PATH);
+        }
+        if (simple.exists(PATH, false)) {
+            simple.deletePath(PATH);
+        }
+        // 设置监听created事件
+        simple.exists(PATH, true);
+        simple.createPath(PATH, "other simple.");
+        simple.exists(PATH, true);
 
-        simple.deletePath(path);
-        System.out.println("deleted path:" + path);
+        String pathValue = simple.readData(PATH, true);
+        System.out.println("path read result 1:" + pathValue);
+        simple.writeData(PATH, "other simple 2.");
+        String pathValue2 = simple.readData(PATH, true);
+        System.out.println("path read result 2:" + pathValue2);
+        simple.getChildren(PATH, true);
+
+        simple.createPath(CHILDREN_PATH, "children");
+        String childrenPathValue = simple.readData(CHILDREN_PATH, true);
+        System.out.println("children path read result1:" + childrenPathValue);
+        simple.writeData(PATH, "children 2.");
+        String childrenPathValue2 = simple.readData(PATH, true);
+        System.out.println("children path read result2:" + childrenPathValue2);
+
+        simple.deletePath(CHILDREN_PATH);
+        simple.deletePath(PATH);
+
+        simple.releaseConnection();
     }
 }
