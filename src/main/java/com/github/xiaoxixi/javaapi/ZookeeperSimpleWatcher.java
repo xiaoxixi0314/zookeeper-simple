@@ -7,7 +7,7 @@ import org.apache.zookeeper.ZooKeeper;
 
 import java.util.concurrent.CountDownLatch;
 
-public class ZookeeperWithWatcher {
+public class ZookeeperSimpleWatcher {
     private final static  String host = "192.168.1.99:2181";
 
     private final static CountDownLatch countdown = new CountDownLatch(1);

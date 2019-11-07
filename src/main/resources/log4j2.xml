@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="DEBUG" monitorInterval="30">
+    <Properties>
+        <Property name="LOG_PATTERN_DEFAULT">
+            [%d{yyyy-MM-dd HH:mm:ss.SSS}] %5p [%15.15t] %-40.40c{1.} - %m%n%ex
+        </Property>
+        <Property name="LOG_PATTERN_SIMPLE">
+            [%d{yyyy-MM-dd HH:mm:ss.SSS}]  - %m%n%ex
+        </Property>
+
+        <property name="basePath">/var/log/zookeeper-simple</property>
+        <property name="archivePath">/var/log/zookeeper-simple/archive</property>
+
+        <property name="mainLog">${basePath}/main.log</property>
+        <property name="mainLogRolling">${archivePath}/main-%d{yyyy-MM-dd}-%i.log.gz</property>
+    </Properties>
+    <Appenders>
+        <Console name="ConsoleAppender" target="SYSTEM_OUT">
+            <PatternLayout pattern="${LOG_PATTERN_DEFAULT}"/>
+        </Console>
+
+        <RollingFile name="MainLogRolling"
+                     filename="${mainLog}" filePattern="${mainLogRolling}"
+                     append="true">
+            <PatternLayout>
+                <Pattern>${LOG_PATTERN_DEFAULT}</Pattern>
+            </PatternLayout>
+            <Policies>
+                <TimeBasedTriggeringPolicy/>
+                <SizeBasedTriggeringPolicy size="20 MB"/>
+            </Policies>
+        </RollingFile>
+    </Appenders>
+    <Loggers>
+
+        <Logger name="com.github.xiaoxixi" level="info" additivity="false">
+            <AppenderRef ref="MainLogRolling" />
+        </Logger>
+
+        <Root level="info">
+            <AppenderRef ref="ConsoleAppender"/>
+            <AppenderRef ref="MainLogRolling" />
+        </Root>
+    </Loggers>
+</Configuration>

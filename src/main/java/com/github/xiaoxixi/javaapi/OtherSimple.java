@@ -57,6 +57,7 @@ public class OtherSimple implements Watcher {
     }
     public void writeData(String path, String value) {
         try {
+            // version 为-1则表示不做版本验证，类似乐观锁
             zookeeper.setData(path, value.getBytes(), -1);
         }catch (Exception e) {
             e.printStackTrace();
