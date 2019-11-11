@@ -35,7 +35,7 @@
 		<zookeeper.version>3.4.12</zookeeper.version>
 		<junit.version>4.12</junit.version>
 		<zkclient.version>0.10</zkclient.version>
-		<curator.version>2.5.0</curator.version>
+		<curator.version>4.2.0</curator.version>
 	</properties>
 
     <dependencies>
@@ -131,6 +131,10 @@
 			<groupId>org.apache.curator</groupId>
 			<artifactId>curator-framework</artifactId>
 		</dependency>
+		<dependency>
+			<groupId>org.apache.curator</groupId>
+			<artifactId>curator-recipes</artifactId>
+		</dependency>
 	</dependencies>
 
     <dependencyManagement>
@@ -183,7 +187,11 @@
 				<version>${curator.version}</version>
 			</dependency>
 
-
+			<dependency>
+				<groupId>org.apache.curator</groupId>
+				<artifactId>curator-recipes</artifactId>
+				<version>${curator.version}</version>
+			</dependency>
 		</dependencies>
 	</dependencyManagement>
 </project>
