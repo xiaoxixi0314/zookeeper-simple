@@ -2,18 +2,28 @@ package com.github.xiaoxixi.zkclient;
 
 import org.I0Itec.zkclient.ZkClient;
 import org.I0Itec.zkclient.ZkConnection;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
 
 import java.util.List;
 
-public class ZkclientOperator {
+public class ZkClientOperatorTest {
 
     private final static  String host = "192.168.1.99:2181";
 
-    public static void main(String[] args) throws Exception{
-        ZkClient zkClient = new ZkClient(new ZkConnection(host), 10000);
+    private ZkClient zkClient = null;
 
+    @Before
+    public void initZkClient() {
+        zkClient = new ZkClient(new ZkConnection(host), 10000);
+    }
+
+    @Test
+    public void testZkClientOperate() throws Exception{
         // 创建临时节点
         zkClient.createEphemeral("/temp");
+
         // 创建级联节点，ture的话会创建父节点
         zkClient.createPersistent("/super1/c1", true);
         Thread.sleep(2000);
@@ -26,8 +36,9 @@ public class ZkclientOperator {
         zkClient.createPersistent("/super1", "1234");
         zkClient.createPersistent("/super1/c1", "c1 content");
         zkClient.createPersistent("/super1/c2", "c2 content");
-        List<String> childrens = zkClient.getChildren("/super1");
-        for (String child : childrens) {
+
+        List<String> childs = zkClient.getChildren("/super1");
+        for (String child : childs) {
             String fullPath = "/super1/" + child;
             System.out.println("path is:" + fullPath + ", value is:"+zkClient.readData(fullPath));
         }
@@ -36,7 +47,11 @@ public class ZkclientOperator {
         System.out.println("/super1/c1 latest content:" + zkClient.readData("/super1/c1"));
 
         zkClient.deleteRecursive("/super1");
-        zkClient.close();
 
+    }
+
+    @After
+    public void afterTest(){
+        zkClient.close();
     }
 }

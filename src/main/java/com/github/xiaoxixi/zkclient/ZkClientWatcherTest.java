@@ -10,7 +10,7 @@ import org.junit.Test;
 
 import java.util.List;
 
-public class TestZkClientWatcher {
+public class ZkClientWatcherTest {
 
     private ZkClient zkClient;
     private final String host = "192.168.1.99:2181";

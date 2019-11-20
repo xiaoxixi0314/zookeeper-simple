@@ -13,10 +13,8 @@ import org.apache.zookeeper.data.Stat;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.sql.SQLOutput;
 
-
-public class TestCuratorWatcher {
+public class CuratorWatcherTest {
     /**
      * ExponentialBackoffRetry:重试一定次数，每次重试时间一次递增
      * RetryNTimes:重试N次
