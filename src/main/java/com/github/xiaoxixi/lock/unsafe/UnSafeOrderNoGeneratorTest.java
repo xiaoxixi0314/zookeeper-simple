@@ -1,8 +1,5 @@
 package com.github.xiaoxixi.lock.unsafe;
 
-import com.sun.corba.se.impl.presentation.rmi.IDLNameTranslatorImpl;
-
-import javax.naming.InsufficientResourcesException;
 import java.util.*;
 import java.util.concurrent.CountDownLatch;
 import java.util.function.Function;
