@@ -1,10 +1,11 @@
 package com.github.xiaoxixi;
 
-import org.apache.zookeeper.ZooKeeper;
+import org.I0Itec.zkclient.ZkClient;
+import org.I0Itec.zkclient.ZkConnection;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import java.io.IOException;
+import org.springframework.context.annotation.Scope;
 
 @Configuration
 public class ZookeeperConfig {
@@ -16,7 +17,8 @@ public class ZookeeperConfig {
     private int zookeeperTimeout;
 
     @Bean
-    public ZooKeeper zooKeeper() throws IOException {
-        return new ZooKeeper(zookeeperHost, zookeeperTimeout, null);
+    @Scope("prototype")
+    public ZkClient zkClient(){
+        return new ZkClient(new ZkConnection(zookeeperHost, zookeeperTimeout));
     }
 }

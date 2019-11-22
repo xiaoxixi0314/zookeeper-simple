@@ -29,8 +29,7 @@ public class MysqlLockServiceImpl extends AbstractLockService {
     @Override
     public void waitLock(){
         try {
-            Thread.sleep(20);
-            System.out.println(".");
+            Thread.sleep(10);
         } catch (InterruptedException ie) {
             Thread.currentThread().interrupt();
             LOGGER.error("wait lock interrupt exception:", ie);

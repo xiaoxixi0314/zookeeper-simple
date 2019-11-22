@@ -2,7 +2,6 @@ package com.github.xiaoxixi.javaapi;
 
 import org.apache.zookeeper.*;
 import org.springframework.util.StringUtils;
-
 import java.util.concurrent.CountDownLatch;
 
 public class OtherSimple implements Watcher {
