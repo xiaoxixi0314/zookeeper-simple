@@ -5,9 +5,9 @@ import java.util.concurrent.CountDownLatch;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
-public class UnSafeOrderNoGeneratorTest extends Thread{
+public class OrderNoGeneratorTest extends Thread{
 
-    UnSafeOrderNoGenerator orderNoGenerator = new UnSafeOrderNoGenerator();
+    OrderNoGenerator orderNoGenerator = new OrderNoGenerator();
 
     private static final int THREAD_NUMS = 2000;
     private static CountDownLatch countDown = new CountDownLatch(THREAD_NUMS);
@@ -17,13 +17,13 @@ public class UnSafeOrderNoGeneratorTest extends Thread{
     @Override
     public void run() {
         countDown.countDown();
-        orderNoResult.add(orderNoGenerator.getOrderNo());
+        orderNoResult.add(orderNoGenerator.getOrderNoUnSafe());
     }
 
     public static void main(String[] args){
         try {
             for (int i = 0; i < THREAD_NUMS; i++) {
-                new UnSafeOrderNoGeneratorTest().start();
+                new OrderNoGeneratorTest().start();
             }
             countDown.await();
 

@@ -6,6 +6,9 @@ import java.util.Date;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
+/**
+ * 单机线程安全
+ */
 public class StandAloneSafeOrderNoGenerator {
 
     private static int startNo = 0;

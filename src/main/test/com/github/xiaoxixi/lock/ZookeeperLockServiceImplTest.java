@@ -1,6 +1,6 @@
 package com.github.xiaoxixi.lock;
 
-import com.github.xiaoxixi.lock.unsafe.UnSafeOrderNoGenerator;
+import com.github.xiaoxixi.lock.unsafe.OrderNoGenerator;
 import org.junit.Test;
 
 import javax.annotation.Resource;
@@ -8,35 +8,51 @@ import java.util.concurrent.CountDownLatch;
 
 public class ZookeeperLockServiceImplTest extends BaseTest{
 
-    private UnSafeOrderNoGenerator unSafe = new UnSafeOrderNoGenerator();
-    private static final int THREAD_NUMS = 10;
+    private OrderNoGenerator unSafe = new OrderNoGenerator();
+    private static final int THREAD_NUMS = 20;
+
     CountDownLatch countDown = new CountDownLatch(THREAD_NUMS);
 
-    @Resource(name = "zkLockService")
+
+    @Resource(name ="zkLockService")
     private LockService lockService;
 
     @Test
     public void testZkLock() throws Exception {
         for (int i = 0; i < THREAD_NUMS; i++){
             new Thread(() -> {
+                System.out.println("start generate order no ..............");
                 countDown.countDown();
                 generateOrderNo();
             }).start();
         }
         countDown.await();
-        Thread.sleep(30000);
+        Thread.sleep(3000);
     }
 
+//    @Test
+//    public void testZkLockSeq() throws Exception {
+//
+//        for (int i = 0; i < THREAD_NUMS; i++){
+//            new Thread(() -> {
+//                System.out.println("start generate order no ..............");
+//                countDown.countDown();
+//                System.out.println(generateOrderNo());
+//            }).start();
+//        }
+//        countDown.await();
+//        Thread.sleep(3000);
+//    }
+
     public void generateOrderNo() {
+
         try {
             lockService.getLock();
-            String orderNo = unSafe.getOrderNo();
-            System.out.println(Thread.currentThread().getName()+":" + orderNo);
-        } catch (Exception e) {
-            e.printStackTrace();
+            unSafe.printOrderNo();
         } finally {
             lockService.unLock();
         }
     }
+
 
 }

@@ -1,13 +1,13 @@
 package com.github.xiaoxixi.lock;
 
-import com.github.xiaoxixi.lock.unsafe.UnSafeOrderNoGenerator;
+import com.github.xiaoxixi.lock.unsafe.OrderNoGenerator;
 import org.junit.Test;
 import javax.annotation.Resource;
 import java.util.concurrent.CountDownLatch;
 
 public class MysqlLockServiceImplTest extends BaseTest {
 
-    private UnSafeOrderNoGenerator unSafe = new UnSafeOrderNoGenerator();
+    private OrderNoGenerator unSafe = new OrderNoGenerator();
     private static final int THREAD_NUMS = 100;
     CountDownLatch countDown = new CountDownLatch(THREAD_NUMS);
 
@@ -25,13 +25,14 @@ public class MysqlLockServiceImplTest extends BaseTest {
         }
         countDown.await();
         System.out.println("start test....");
+        Thread.sleep(3000);
     }
 
 
     public void generateOrderNo() {
         try {
             lockService.getLock();
-            String orderNo = unSafe.getOrderNo();
+            String orderNo = unSafe.getOrderNoUnSafe();
             System.out.println(Thread.currentThread().getName()+":" + orderNo);
         } catch (Exception e) {
           e.printStackTrace();

@@ -4,19 +4,15 @@ import org.I0Itec.zkclient.IZkDataListener;
 import org.I0Itec.zkclient.ZkClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.Objects;
 import java.util.concurrent.CountDownLatch;
 
 /**
  * 注意羊群效应
  */
-@Service("zkLockService")
-public class ZookeeperLockServiceImpl extends AbstractLockService {
+@Service(value ="zkLockService")
+public class ZkLockServiceImpl extends AbstractLockService {
 
-    private static final String LOCK_PATH = "/LOCK_SERVICE";
-
-    private CountDownLatch countDown;
+    private static final String LOCK_PATH = "/lock_service";
 
     @Autowired
     private ZkClient zkClient;
@@ -38,27 +34,24 @@ public class ZookeeperLockServiceImpl extends AbstractLockService {
 
     @Override
     public void waitLock() {
+        final CountDownLatch countDown = new CountDownLatch(1);
         IZkDataListener listener = new IZkDataListener(){
             @Override
-            public void handleDataChange(String dataPath, Object data){}
+            public void handleDataChange(String dataPath, Object data){
+            }
 
             @Override
             public void handleDataDeleted(String dataPath){
-                if (Objects.isNull(countDown)) {
-                    return;
-                }
                 countDown.countDown();
             }
         };
         zkClient.subscribeDataChanges(LOCK_PATH, listener);
 
         if (zkClient.exists(LOCK_PATH)) {
-            countDown = new CountDownLatch(1);
             try {
                 countDown.await();
             } catch (InterruptedException ie){
-                Thread.currentThread().interrupt();
-                throw new RuntimeException("wait lock error:", ie);
+                ie.printStackTrace();
             }
         }
 
