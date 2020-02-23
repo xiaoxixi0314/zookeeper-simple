@@ -1,4 +1,4 @@
-package com.github.xiaoxixi.client_use.curator;
+package com.github.xiaoxixi.client.curator;
 
 import com.alibaba.fastjson.JSON;
 import org.apache.curator.RetryPolicy;

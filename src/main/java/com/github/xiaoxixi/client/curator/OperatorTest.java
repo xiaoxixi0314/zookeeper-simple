@@ -1,4 +1,4 @@
-package com.github.xiaoxixi.client_use.curator;
+package com.github.xiaoxixi.client.curator;
 
 import org.apache.curator.RetryPolicy;
 import org.apache.curator.framework.CuratorFramework;

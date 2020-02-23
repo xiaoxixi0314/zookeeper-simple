@@ -1,4 +1,4 @@
-package com.github.xiaoxixi.javaapi;
+package com.github.xiaoxixi.client.javaapi;
 
 import org.apache.zookeeper.CreateMode;
 import org.apache.zookeeper.Watcher;

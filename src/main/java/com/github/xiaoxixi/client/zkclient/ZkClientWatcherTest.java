@@ -1,4 +1,4 @@
-package com.github.xiaoxixi.zkclient;
+package com.github.xiaoxixi.client.zkclient;
 
 import org.I0Itec.zkclient.IZkChildListener;
 import org.I0Itec.zkclient.IZkDataListener;
