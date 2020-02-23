@@ -32,7 +32,7 @@
 		<page.helper.version>1.2.5</page.helper.version>
 		<alibaba.druid.version>1.1.10</alibaba.druid.version>
 		<alibaba.fastjson.version>1.2.45</alibaba.fastjson.version>
-		<zookeeper.version>3.4.12</zookeeper.version>
+		<zookeeper.version>3.4.14</zookeeper.version>
 		<junit.version>4.12</junit.version>
 		<zkclient.version>0.10</zkclient.version>
 		<curator.version>4.2.0</curator.version>
