@@ -5,6 +5,7 @@ import org.apache.curator.framework.CuratorFramework;
 import org.apache.curator.framework.CuratorFrameworkFactory;
 import org.apache.curator.framework.api.BackgroundCallback;
 import org.apache.curator.framework.api.CuratorListener;
+import org.apache.curator.framework.api.transaction.CuratorOp;
 import org.apache.curator.framework.api.transaction.CuratorTransactionResult;
 import org.apache.curator.retry.ExponentialBackoffRetry;
 import org.apache.zookeeper.CreateMode;
@@ -65,6 +66,12 @@ public class OperatorTest {
 
         System.out.println("/curator is exists:" + (stat1 != null));
         System.out.println("/curator2 is exists:" + (stat2 != null));
+    }
+
+    @Test
+    public void testSetData() throws Exception {
+        client.checkExists().forPath("/curator");
+        client.setData().forPath("/curator", "hello".getBytes());
     }
 
 
