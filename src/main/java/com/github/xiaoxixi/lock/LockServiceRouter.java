@@ -14,7 +14,7 @@ public class LockServiceRouter{
     public void safeOperate(LockStrategyEnum strategy, Operate action){
         LockService lock = getLockService(strategy);
         try {
-            lock.getLock();
+            lock.lock();
             action.process();
         } finally {
             lock.unLock();

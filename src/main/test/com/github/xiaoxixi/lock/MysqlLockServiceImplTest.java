@@ -31,7 +31,7 @@ public class MysqlLockServiceImplTest extends BaseTest {
 
     public void generateOrderNo() {
         try {
-            lockService.getLock();
+            lockService.lock();
             String orderNo = unSafe.getOrderNoUnSafe();
             System.out.println(Thread.currentThread().getName()+":" + orderNo);
         } catch (Exception e) {

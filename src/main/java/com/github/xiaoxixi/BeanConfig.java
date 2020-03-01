@@ -3,14 +3,17 @@ package com.github.xiaoxixi;
 import com.github.xiaoxixi.lock.LockService;
 import com.github.xiaoxixi.lock.enums.LockStrategyEnum;
 import org.I0Itec.zkclient.ZkClient;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.stereotype.Component;
+
 import javax.annotation.Resource;
 import java.util.HashMap;
 import java.util.Map;
 
-@Configuration
-public class Config {
+@Component
+public class BeanConfig {
 
     @Resource(name = "mysqlLockService")
     private LockService mysqlLockService;
@@ -20,11 +23,6 @@ public class Config {
 
     @Resource(name = "zkSeqLockService")
     private LockService zkSeqLockService;
-
-    @Bean
-    public ZkClient zkClient() {
-        return new ZkClient("192.168.1.99:2181", 7000, 4000);
-    }
 
     @Bean
     public Map<LockStrategyEnum, LockService> lockServiceMap(){

@@ -47,7 +47,7 @@ public class ZookeeperLockServiceImplTest extends BaseTest{
     public void generateOrderNo() {
 
         try {
-            lockService.getLock();
+            lockService.lock();
             unSafe.printOrderNo();
         } finally {
             lockService.unLock();
