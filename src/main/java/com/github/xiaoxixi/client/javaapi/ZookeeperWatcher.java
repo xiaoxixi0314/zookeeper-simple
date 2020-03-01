@@ -12,7 +12,7 @@ public class ZookeeperWatcher implements Watcher {
 
     private final CountDownLatch waiter = new CountDownLatch(1);
 
-    private static final String HOST = "192.168.1.99:2181";
+    private static final String HOST = "192.168.1.201:2181";
 
     private static final String PATH = "/test_watcher";
 
@@ -40,16 +40,12 @@ public class ZookeeperWatcher implements Watcher {
         }
     }
 
-    public String readData(String path, boolean needWatch) {
-        try {
-            return new String(zookeeper.getData(path, needWatch, null));
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return "";
-    }
-
-
+    /**
+     * 创建节点
+     * @param path
+     * @param value
+     * @return
+     */
     public Boolean createPath(String path, String value) {
         try{
             String actualPath = zookeeper.create(path,
@@ -63,18 +59,26 @@ public class ZookeeperWatcher implements Watcher {
         }
     }
 
-    public List<String> getChildren(String path, boolean needWatch) {
-        List<String> childrens = new ArrayList<>();
+    /**
+     * 读取节点数据
+     * @param path
+     * @param needWatch
+     * @return
+     */
+    public String readData(String path, boolean needWatch) {
         try {
-            childrens = zookeeper.getChildren(path, needWatch);
-        } catch (KeeperException e) {
-            e.printStackTrace();
-        } catch (InterruptedException e) {
+            return new String(zookeeper.getData(path, needWatch, null));
+        } catch (Exception e) {
             e.printStackTrace();
         }
-        return childrens;
+        return "";
     }
 
+    /**
+     * 修改节点数据
+     * @param path
+     * @param value
+     */
     public void writeData(String path, String value) {
         try {
             zookeeper.setData(path, value.getBytes(), -1);
@@ -83,6 +87,28 @@ public class ZookeeperWatcher implements Watcher {
         }
     }
 
+    /**
+     * 获取节点子孙
+     * @param path
+     * @param needWatch
+     * @return
+     */
+    public List<String> getChildren(String path, boolean needWatch) {
+        List<String> children = new ArrayList<>();
+        try {
+            children = zookeeper.getChildren(path, needWatch);
+        } catch (KeeperException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        return children;
+    }
+
+    /**
+     * 删除节点（只能是叶子节点）
+     * @param path
+     */
     public void deletePath(String path) {
         try {
             zookeeper.delete(path, -1);
@@ -91,6 +117,12 @@ public class ZookeeperWatcher implements Watcher {
         }
     }
 
+    /**
+     * 判断路径是否存在
+     * @param path
+     * @param needWatch
+     * @return
+     */
     public boolean exists(String path, boolean needWatch) {
         Stat stat = null;
         try {

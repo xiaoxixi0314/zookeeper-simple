@@ -9,7 +9,7 @@ public class OrderNoGeneratorTest extends Thread{
 
     OrderNoGenerator orderNoGenerator = new OrderNoGenerator();
 
-    private static final int THREAD_NUMS = 2000;
+    private static final int THREAD_NUMS = 3000;
     private static CountDownLatch countDown = new CountDownLatch(THREAD_NUMS);
 
     private static List<String> orderNoResult = new Vector<>();

@@ -7,16 +7,16 @@ import org.apache.zookeeper.ZooKeeper;
 import org.junit.Test;
 
 import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.CyclicBarrier;
 
-public class ZookeeperSimpleWatcher {
-    private final static  String host = "192.168.1.99:2181";
+public class ZookeeperSessionAfterConnected {
+    private final static  String host = "192.168.1.201:2181";
 
     private final static CountDownLatch countdown = new CountDownLatch(1);
 
 
     @Test
     public void testSimpleWatcher() throws Exception{
-
         ZooKeeper zooKeeper = new ZooKeeper(host, 30000, (event) -> {
             if (event.getState() == Watcher.Event.KeeperState.SyncConnected) {
                 countdown.countDown();
