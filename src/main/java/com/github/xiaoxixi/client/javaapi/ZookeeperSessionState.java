@@ -6,6 +6,8 @@ import org.apache.zookeeper.ZooDefs;
 import org.apache.zookeeper.ZooKeeper;
 import org.junit.Test;
 
+import java.util.Objects;
+
 /**
  * zookeeper session state
  * Connecting
@@ -29,7 +31,7 @@ public class ZookeeperSessionState {
             });
             System.out.println(zooKeeper.getState());
             System.out.println(zooKeeper);
-            if(zooKeeper.exists(PATH, false) != null) {
+            if(!Objects.isNull(zooKeeper.exists(PATH, false))) {
                 zooKeeper.delete(PATH, -1);
                 System.out.println("=====path " + PATH + " was deleted=====");
             }

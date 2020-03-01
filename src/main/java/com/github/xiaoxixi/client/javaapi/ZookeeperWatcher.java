@@ -142,7 +142,7 @@ public class ZookeeperWatcher implements Watcher {
     @Override
     public void process(WatchedEvent event) {
         if(event.getState() == Event.KeeperState.SyncConnected) {
-            System.out.println("zookeeper connected.");
+            System.out.println("==zookeeper connected.");
             waiter.countDown();
         }
         // 调用exists方法设置监听
@@ -167,21 +167,22 @@ public class ZookeeperWatcher implements Watcher {
 
     public static void main(String[] args) throws Exception{
 
+        // 创建连接
         ZookeeperWatcher simple = new ZookeeperWatcher();
-
-
         simple.createConnection();
-
+        // 数据准备
         if (simple.exists(CHILDREN_PATH, false)) {
             simple.deletePath(CHILDREN_PATH);
         }
         if (simple.exists(PATH, false)) {
             simple.deletePath(PATH);
         }
+
         // 设置监听created事件
         simple.exists(PATH, true);
         simple.createPath(PATH, "other simple.");
         simple.exists(PATH, true);
+
 
         String pathValue = simple.readData(PATH, true);
         System.out.println("path read result 1:" + pathValue);
