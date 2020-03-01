@@ -23,7 +23,7 @@ public class CuratorWatcherTest {
      */
     private static final RetryPolicy retryPolicy = new ExponentialBackoffRetry(1000, 3);
 
-    private static final String SERVER = "192.168.1.99:2181";
+    private static final String SERVER = "192.168.1.201:2181";
     private static final int SESSION_TIME_OUT = 30000;
     private static final int CONNECT_TIME_OUT = 30000;
 

@@ -10,7 +10,7 @@ import java.util.List;
 
 public class ZkClientOperatorTest {
 
-    private final static  String host = "192.168.1.99:2181";
+    private final static  String host = "192.168.1.201:2181";
 
     private ZkClient zkClient = null;
 
@@ -37,8 +37,8 @@ public class ZkClientOperatorTest {
         zkClient.createPersistent("/super1/c1", "c1 content");
         zkClient.createPersistent("/super1/c2", "c2 content");
 
-        List<String> childs = zkClient.getChildren("/super1");
-        for (String child : childs) {
+        List<String> children = zkClient.getChildren("/super1");
+        for (String child : children) {
             String fullPath = "/super1/" + child;
             System.out.println("path is:" + fullPath + ", value is:"+zkClient.readData(fullPath));
         }
@@ -47,7 +47,6 @@ public class ZkClientOperatorTest {
         System.out.println("/super1/c1 latest content:" + zkClient.readData("/super1/c1"));
 
         zkClient.deleteRecursive("/super1");
-
     }
 
     @After

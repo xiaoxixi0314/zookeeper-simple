@@ -13,7 +13,7 @@ import java.util.List;
 public class ZkClientWatcherTest {
 
     private ZkClient zkClient;
-    private final String host = "192.168.1.99:2181";
+    private final String host = "192.168.1.201:2181";
 
 
     @Before
@@ -48,9 +48,9 @@ public class ZkClientWatcherTest {
         zkClient.createPersistent("/super/c1", true);
         zkClient.subscribeChildChanges("/super", new IZkChildListener() {
             @Override
-            public void handleChildChange(String parentPath, List<String> currentChilds) throws Exception {
+            public void handleChildChange(String parentPath, List<String> currentChildren) throws Exception {
                 System.out.println("parent path:" + parentPath);
-                System.out.println("current childs:" + currentChilds);
+                System.out.println("current childs:" + currentChildren);
             }
         });
 
