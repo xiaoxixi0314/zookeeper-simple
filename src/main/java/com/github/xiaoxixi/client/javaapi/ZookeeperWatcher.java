@@ -12,7 +12,7 @@ public class ZookeeperWatcher implements Watcher {
 
     private final CountDownLatch waiter = new CountDownLatch(1);
 
-    private static final String HOST = "192.168.1.201:2181";
+    private static final String HOST = "192.168.18.105:2181";
 
     private static final String PATH = "/test_watcher";
 

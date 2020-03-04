@@ -11,7 +11,7 @@ import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.CyclicBarrier;
 
 public class ZookeeperSessionAfterConnected {
-    private final static  String host = "192.168.1.201:2181";
+    private final static  String host = "192.168.18.105:2181";
 
     private final static CountDownLatch countdown = new CountDownLatch(1);
     private final static String PATH = "/simple";

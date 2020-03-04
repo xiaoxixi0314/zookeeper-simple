@@ -10,7 +10,7 @@ import java.util.List;
 
 public class ZkClientOperatorTest {
 
-    private final static  String host = "192.168.1.201:2181";
+    private final static  String host = "192.168.18.105:2181";
 
     private ZkClient zkClient = null;
 

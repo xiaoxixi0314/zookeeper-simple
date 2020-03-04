@@ -13,7 +13,7 @@ import java.util.List;
 public class ZkClientWatcherTest {
 
     private ZkClient zkClient;
-    private final String host = "192.168.1.201:2181";
+    private final String host = "192.168.18.105:2181";
 
 
     @Before
